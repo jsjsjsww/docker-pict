@@ -24,6 +24,16 @@ public class PICTMethod {
 	  }
 	  res.append("\n");
 	}
+	ArrayList<String> constraint = model.getConstraint();
+	int[] valueSum = new int[values.length];
+	valueSum[0] = 0;
+	for(int i = 1; i < valueSum.length; i++)
+	  valueSum[i] = valueSum[i - 1] + values[i - 1];
+	for(int i = 0; i < constraint.size(); i++){
+	  res.append(transfer(constraint.get(i), valueSum));
+	  res.append("\n");
+	}
+
 	try {
 	  File file = new File("./PICT/model.txt");
 	  if (!file.exists()) {
@@ -68,6 +78,37 @@ public class PICTMethod {
 	  return new TestSuite(testsuite, res);
 	}
 
+  }
+
+  public static String transfer(String s, int[] value){
+	String res = "";
+	String[] split = s.split(" - ");
+	split[0] = split[0].substring(2, split[0].length());
+	int[] a = new int[split.length];
+	for(int i = 0; i < split.length; i++) {
+	  a[i] = Integer.parseInt(split[i]);
+	}
+	int i = 0, j = 0;
+	while(i < a.length) {
+	  //System.out.println("a[i] = " + a[i] + " value[j] = " + j);
+	  while (j < value.length && a[i] >= value[j])
+		j++;
+	  //System.out.println(" j = "+j  );
+	  split[i] = "[p"+ j + "]=" + (a[i] - value[j - 1]);
+	  i++;
+	}
+	for(i = 0; i < split.length; i++) {
+	  String tmp = "if ";
+	  for (j = 0; j < split.length; j++) {
+		if (i != j)
+		  tmp += split[j] + "AND";
+	  }
+	  tmp = tmp.substring(0, tmp.length() - 3);
+	  tmp += " then " + split[i].substring(0,split[i].indexOf('=')) + "<>" + split[i].substring(split[i].indexOf('=') + 1, split[i].length()) + ";";
+	  res += tmp + "\n";
+	}
+	System.out.println(res);
+	return res;
   }
 
 
