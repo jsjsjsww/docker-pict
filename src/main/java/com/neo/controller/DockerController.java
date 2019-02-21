@@ -55,7 +55,7 @@ public class DockerController {
         for(int i = 0; i < constraintList.size(); i++){
             constraint.add((String)constraintList.get(i));
         }
-        CTModel model = new CTModel(parameters, strength, values, constraint);
+        CTModel model = new CTModel(parameters, strength, values, constraint, new ArrayList<>(), new ArrayList<>());
         PICTMethod.generateModelFile(model);
         TestSuite ts = PICTMethod.runPICT("PICT/model.txt", strength);
         return ts;
