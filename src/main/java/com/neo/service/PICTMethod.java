@@ -35,7 +35,7 @@ public class PICTMethod {
 	}
 
 	try {
-	  File file = new File("./PICT/model.txt");
+	  File file = new File("model.txt");
 	  if (!file.exists()) {
 		file.getParentFile().mkdirs();
 		file.createNewFile();
@@ -50,7 +50,7 @@ public class PICTMethod {
 
   public static TestSuite runPICT(String modelFile, int strength){
 	System.out.println(System.getProperty("user.dir"));
-	String command = "PICT/pict.exe " +  modelFile + " /o:" + strength;
+	String command = "pict.exe " +  modelFile + " /o:" + strength;
 	Runtime runtime = Runtime.getRuntime();
 	long res = 0;
 	ArrayList<int[]> testsuite = new ArrayList<>();

@@ -5,6 +5,7 @@ import com.neo.domain.TestSuite;
 import com.neo.service.PICTMethod;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/generation")
 public class DockerController {
 	
-    @RequestMapping(value = "/PICT", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     // PICT 3.5 version
     public TestSuite PICTGeneration(HttpServletRequest request) {
 
@@ -57,7 +57,12 @@ public class DockerController {
         }
         CTModel model = new CTModel(parameters, strength, values, constraint, new ArrayList<>(), new ArrayList<>());
         PICTMethod.generateModelFile(model);
-        TestSuite ts = PICTMethod.runPICT("PICT/model.txt", strength);
+        TestSuite ts = PICTMethod.runPICT("model.txt", strength);
         return ts;
+    }
+
+    @GetMapping("/check")
+    public String healthCheck(){
+        return "ok";
     }
 }
